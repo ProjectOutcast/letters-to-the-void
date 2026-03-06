@@ -6,11 +6,12 @@ import * as THREE from "three";
 import { BubbleTooltip } from "./bubble";
 
 const GLOBE_RADIUS = 1;
-const RISE_DURATION = 4000; // ms
-const ANTICIPATION_DURATION = 500; // ms
-const FADE_DURATION = 1000; // ms
+const RISE_DURATION = 5000; // ms
+const ANTICIPATION_DURATION = 600; // ms
+const FADE_DURATION = 1200; // ms
 const TOTAL_DURATION = ANTICIPATION_DURATION + RISE_DURATION + FADE_DURATION;
-const RISE_HEIGHT = 2.5;
+const RISE_HEIGHT = 3;
+const BUBBLE_SCALE = 0.07;
 
 export interface VentBubble {
   id: string;
@@ -31,6 +32,9 @@ function latLonToVec3(lat: number, lon: number, radius: number): THREE.Vector3 {
   );
 }
 
+// World up direction — bubbles always rise upward visually
+const WORLD_UP = new THREE.Vector3(0, 1, 0);
+
 interface BubbleMeshProps {
   bubble: VentBubble;
   startTime: number;
@@ -49,7 +53,15 @@ function BubbleMesh({ bubble, startTime, onExpired }: BubbleMeshProps) {
     [bubble.latitude, bubble.longitude]
   );
 
-  const direction = useMemo(() => origin.clone().normalize(), [origin]);
+  // Rise direction: mostly upward (Y+), with a slight outward push from globe surface
+  const riseDirection = useMemo(() => {
+    const outward = origin.clone().normalize();
+    // Blend: 70% world up + 30% outward from surface
+    const dir = WORLD_UP.clone()
+      .multiplyScalar(0.7)
+      .add(outward.multiplyScalar(0.3));
+    return dir.normalize();
+  }, [origin]);
 
   // Random drift values seeded per bubble
   const drift = useMemo(() => {
@@ -57,10 +69,10 @@ function BubbleMesh({ bubble, startTime, onExpired }: BubbleMeshProps) {
     return {
       freqX: 0.5 + (s % 100) / 100,
       freqZ: 0.3 + ((s * 7) % 100) / 100,
-      ampX: 0.08 + ((s * 13) % 100) / 500,
-      ampZ: 0.06 + ((s * 17) % 100) / 500,
-      phaseX: (s % 50) / 50 * Math.PI * 2,
-      phaseZ: ((s * 3) % 50) / 50 * Math.PI * 2,
+      ampX: 0.1 + ((s * 13) % 100) / 400,
+      ampZ: 0.08 + ((s * 17) % 100) / 400,
+      phaseX: ((s % 50) / 50) * Math.PI * 2,
+      phaseZ: (((s * 3) % 50) / 50) * Math.PI * 2,
     };
   }, [bubble.seed]);
 
@@ -106,51 +118,59 @@ function BubbleMesh({ bubble, startTime, onExpired }: BubbleMeshProps) {
 
     let scale = 1;
     let opacity = 1;
-    let riseProgress = 0;
 
     if (elapsed < ANTICIPATION_DURATION) {
-      // Act 1: Anticipation — pulse at origin
+      // Act 1: Anticipation — pulse/grow at origin
       const t = elapsed / ANTICIPATION_DURATION;
-      scale = 0.6 + 0.4 * Math.sin(t * Math.PI);
-      opacity = 0.5 + 0.5 * t;
+      scale = 0.3 + 0.7 * Math.sin(t * Math.PI * 0.5); // grow in
+      opacity = 0.4 + 0.6 * t;
+      meshRef.current.position.copy(origin);
     } else if (elapsed < ANTICIPATION_DURATION + RISE_DURATION) {
-      // Act 2 & 3: Rise
+      // Act 2: Rise upward
       const riseElapsed = elapsed - ANTICIPATION_DURATION;
-      riseProgress = riseElapsed / RISE_DURATION;
-      // Ease-out cubic
+      const riseProgress = riseElapsed / RISE_DURATION;
+      // Ease-out cubic for smooth deceleration
       const eased = 1 - Math.pow(1 - riseProgress, 3);
-      scale = 1;
+
+      scale = 1 + 0.15 * eased; // grow slightly as it rises
       opacity = 1;
 
-      // Begin fading near the end of rise
+      // Begin fading in the last 30% of rise
       if (riseProgress > 0.7) {
         opacity = 1 - (riseProgress - 0.7) / 0.3;
       }
 
       const height = eased * RISE_HEIGHT;
-      const pos = origin.clone().add(direction.clone().multiplyScalar(height));
+      const pos = origin
+        .clone()
+        .add(riseDirection.clone().multiplyScalar(height));
 
-      // Add organic drift
+      // Add organic sin/cos drift
       const driftTime = riseElapsed / 1000;
       pos.x +=
-        Math.sin(driftTime * drift.freqX + drift.phaseX) * drift.ampX * eased;
+        Math.sin(driftTime * drift.freqX + drift.phaseX) *
+        drift.ampX *
+        eased;
       pos.z +=
-        Math.cos(driftTime * drift.freqZ + drift.phaseZ) * drift.ampZ * eased;
+        Math.cos(driftTime * drift.freqZ + drift.phaseZ) *
+        drift.ampZ *
+        eased;
 
       meshRef.current.position.copy(pos);
     } else {
-      // Final fade
+      // Act 3: Final dissolve
       const fadeElapsed = elapsed - ANTICIPATION_DURATION - RISE_DURATION;
-      opacity = 1 - fadeElapsed / FADE_DURATION;
-      scale = 1 - 0.3 * (fadeElapsed / FADE_DURATION);
+      const fadeProgress = fadeElapsed / FADE_DURATION;
+      opacity = 1 - fadeProgress;
+      scale = (1 + 0.15) - 0.4 * fadeProgress; // shrink as it dissolves
 
       const pos = origin
         .clone()
-        .add(direction.clone().multiplyScalar(RISE_HEIGHT));
+        .add(riseDirection.clone().multiplyScalar(RISE_HEIGHT));
       meshRef.current.position.copy(pos);
     }
 
-    meshRef.current.scale.setScalar(Math.max(scale * 0.04, 0.001));
+    meshRef.current.scale.setScalar(Math.max(scale * BUBBLE_SCALE, 0.001));
 
     const mat = meshRef.current.material as THREE.MeshBasicMaterial;
     mat.opacity = Math.max(opacity, 0);
