@@ -3,6 +3,7 @@ import { db } from "@/db";
 import { posts, users } from "@/db/schema";
 import { auth } from "@/lib/auth-config";
 import { eq, desc } from "drizzle-orm";
+import { extractExcerpt } from "@/lib/utils";
 
 export async function GET(req: NextRequest) {
   const { searchParams } = new URL(req.url);
@@ -78,7 +79,7 @@ export async function POST(req: NextRequest) {
     .values({
       title: body.title,
       slug: body.slug,
-      excerpt: body.excerpt,
+      excerpt: body.excerpt || extractExcerpt(body.contentHtml || ""),
       content: body.content,
       contentHtml: body.contentHtml,
       coverImage: body.coverImage,

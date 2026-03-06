@@ -1,5 +1,4 @@
 import Link from "next/link";
-import Image from "next/image";
 import { formatDate, readingTime } from "@/lib/utils";
 import type { PostWithAuthor } from "@/types";
 
@@ -9,13 +8,10 @@ export function FeaturedPost({ post }: { post: PostWithAuthor }) {
       <article className="relative overflow-hidden rounded-xl border border-void-border transition-all duration-200 hover:border-void-border-hover">
         {post.coverImage ? (
           <div className="relative aspect-[21/9]">
-            <Image
+            <img
               src={post.coverImage}
               alt={post.title}
-              fill
-              className="object-cover transition-transform duration-700 group-hover:scale-[1.02]"
-              sizes="100vw"
-              priority
+              className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-[1.02]"
             />
             <div className="absolute inset-0 bg-gradient-to-t from-void via-void/60 to-transparent" />
             <div className="absolute bottom-0 left-0 right-0 p-8">

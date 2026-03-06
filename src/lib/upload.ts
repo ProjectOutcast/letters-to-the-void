@@ -19,9 +19,9 @@ export async function processAndSaveImage(file: File) {
   const buffer = Buffer.from(await file.arrayBuffer());
   const id = randomUUID();
   const now = new Date();
-  const dir = `uploads/${now.getFullYear()}/${String(now.getMonth() + 1).padStart(2, "0")}`;
+  const subDir = `${now.getFullYear()}/${String(now.getMonth() + 1).padStart(2, "0")}`;
   const filename = `${id}.webp`;
-  const fullDir = path.join(process.cwd(), "public", dir);
+  const fullDir = path.join(process.cwd(), "uploads", subDir);
 
   await fs.mkdir(fullDir, { recursive: true });
 
@@ -43,7 +43,7 @@ export async function processAndSaveImage(file: File) {
 
   return {
     storedFilename: filename,
-    url: `/${dir}/${filename}`,
+    url: `/api/uploads/${subDir}/${filename}`,
     width: finalWidth,
     height: finalHeight,
     size: stats.size,
@@ -53,7 +53,9 @@ export async function processAndSaveImage(file: File) {
 }
 
 export async function deleteImageFile(url: string) {
-  const filePath = path.join(process.cwd(), "public", url);
+  // Handle both old /uploads/... and new /api/uploads/... paths
+  const relative = url.replace(/^\/api\/uploads\//, "").replace(/^\/uploads\//, "");
+  const filePath = path.join(process.cwd(), "uploads", relative);
   try {
     await fs.unlink(filePath);
   } catch {

@@ -1,5 +1,4 @@
 import { notFound } from "next/navigation";
-import Image from "next/image";
 import Link from "next/link";
 import type { Metadata } from "next";
 import { Header } from "@/components/layout/header";
@@ -71,13 +70,10 @@ export default async function PostPage({ params }: Props) {
         {/* Cover image */}
         {post.coverImage && (
           <div className="animate-fade-in relative -mx-6 mb-10 aspect-[2/1] overflow-hidden md:mx-0 md:rounded-xl">
-            <Image
+            <img
               src={post.coverImage}
               alt={post.title}
-              fill
-              className="object-cover"
-              sizes="(max-width: 768px) 100vw, 720px"
-              priority
+              className="h-full w-full object-cover"
             />
             <div className="absolute inset-0 bg-gradient-to-t from-void via-transparent to-transparent" />
           </div>

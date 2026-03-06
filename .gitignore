@@ -45,6 +45,6 @@ next-env.d.ts
 *.db-shm
 *.db-wal
 
-# uploads (keep directory structure)
-/public/uploads/*
-!/public/uploads/.gitkeep
+# uploads
+/uploads
+/public/uploads

@@ -28,6 +28,12 @@ export function readingTime(html: string): string {
   return `${minutes} min read`;
 }
 
+export function extractExcerpt(html: string, maxLength = 160): string {
+  const text = html.replace(/<[^>]*>/g, "").replace(/\s+/g, " ").trim();
+  if (text.length <= maxLength) return text;
+  return text.slice(0, maxLength).replace(/\s\S*$/, "") + "…";
+}
+
 export const SITE_NAME = "Letters to The Void";
 export const SITE_DESCRIPTION =
   "Thoughts cast into the darkness. A collection of letters addressed to no one and everyone.";

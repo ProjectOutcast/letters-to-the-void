@@ -3,6 +3,7 @@ import { db } from "@/db";
 import { posts } from "@/db/schema";
 import { auth } from "@/lib/auth-config";
 import { eq } from "drizzle-orm";
+import { extractExcerpt } from "@/lib/utils";
 
 interface Props {
   params: Promise<{ id: string }>;
@@ -32,7 +33,9 @@ export async function PUT(req: NextRequest, { params }: Props) {
 
   if (body.title !== undefined) updateData.title = body.title;
   if (body.slug !== undefined) updateData.slug = body.slug;
-  if (body.excerpt !== undefined) updateData.excerpt = body.excerpt;
+  if (body.excerpt !== undefined)
+    updateData.excerpt =
+      body.excerpt || extractExcerpt(body.contentHtml || "");
   if (body.content !== undefined) updateData.content = body.content;
   if (body.contentHtml !== undefined) updateData.contentHtml = body.contentHtml;
   if (body.coverImage !== undefined) updateData.coverImage = body.coverImage;

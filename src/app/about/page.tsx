@@ -32,8 +32,8 @@ export default function AboutPage() {
             its own gravity.
           </p>
           <p className="text-void-muted">
-            Nothing is expected of you. Read, or don&apos;t. The void is
-            patient.
+            Nothing is expected of you. Read, or don&apos;t. The void
+            will still exist.
           </p>
         </div>
       </main>

@@ -1,5 +1,4 @@
 import Link from "next/link";
-import Image from "next/image";
 import { formatDate, readingTime } from "@/lib/utils";
 import type { PostWithAuthor } from "@/types";
 
@@ -9,12 +8,11 @@ export function PostCard({ post }: { post: PostWithAuthor }) {
       <article className="overflow-hidden rounded-lg border border-void-border bg-void-surface transition-all duration-200 hover:border-void-border-hover hover:shadow-[0_0_30px_rgba(255,255,255,0.02)]">
         {post.coverImage && (
           <div className="relative aspect-[16/9] overflow-hidden">
-            <Image
+            <img
               src={post.coverImage}
               alt={post.title}
-              fill
-              className="object-cover transition-transform duration-500 group-hover:scale-[1.02]"
-              sizes="(max-width: 768px) 100vw, 50vw"
+              className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-[1.02]"
+              loading="lazy"
             />
             <div className="absolute inset-0 bg-gradient-to-t from-void via-transparent to-transparent" />
           </div>
