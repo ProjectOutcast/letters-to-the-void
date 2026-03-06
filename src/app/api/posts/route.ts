@@ -59,6 +59,19 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
   }
 
+  // Verify user still exists in DB (may be stale after redeploy)
+  const userExists = db
+    .select({ id: users.id })
+    .from(users)
+    .where(eq(users.id, session.user.id))
+    .get();
+  if (!userExists) {
+    return NextResponse.json(
+      { error: "Session expired. Please log out and log in again." },
+      { status: 401 }
+    );
+  }
+
   const body = await req.json();
 
   const existing = db

@@ -32,6 +32,7 @@ async function seed() {
   } else {
     db.insert(users)
       .values({
+        id: "void-admin-00000000-0000-0000-000000000001",
         name: "Void Admin",
         email: "admin@letterstothevoid.com",
         passwordHash: hashSync("voidwalker", 12),

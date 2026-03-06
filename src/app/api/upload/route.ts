@@ -1,13 +1,27 @@
 import { NextRequest, NextResponse } from "next/server";
 import { auth } from "@/lib/auth-config";
 import { db } from "@/db";
-import { media } from "@/db/schema";
+import { media, users } from "@/db/schema";
+import { eq } from "drizzle-orm";
 import { processAndSaveImage } from "@/lib/upload";
 
 export async function POST(req: NextRequest) {
   const session = await auth();
   if (!session?.user) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+  }
+
+  // Verify user still exists in DB (may be stale after redeploy)
+  const userExists = db
+    .select({ id: users.id })
+    .from(users)
+    .where(eq(users.id, session.user.id))
+    .get();
+  if (!userExists) {
+    return NextResponse.json(
+      { error: "Session expired. Please log out and log in again." },
+      { status: 401 }
+    );
   }
 
   const formData = await req.formData();
