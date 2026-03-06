@@ -4,6 +4,8 @@ import { PostCard } from "@/components/posts/post-card";
 import { FeaturedPost } from "@/components/posts/featured-post";
 import { getPublishedPosts, getFeaturedPost } from "@/lib/posts";
 
+export const dynamic = "force-dynamic";
+
 export default function HomePage() {
   const featured = getFeaturedPost();
   const posts = getPublishedPosts();

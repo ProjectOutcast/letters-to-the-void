@@ -4,8 +4,10 @@ import Link from "next/link";
 import type { Metadata } from "next";
 import { Header } from "@/components/layout/header";
 import { Footer } from "@/components/layout/footer";
-import { getPostBySlug, getPublishedPosts } from "@/lib/posts";
+import { getPostBySlug } from "@/lib/posts";
 import { formatDate, readingTime, SITE_URL, SITE_NAME } from "@/lib/utils";
+
+export const dynamic = "force-dynamic";
 
 interface Props {
   params: Promise<{ slug: string }>;
@@ -31,11 +33,6 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
       card: "summary_large_image",
     },
   };
-}
-
-export async function generateStaticParams() {
-  const posts = getPublishedPosts();
-  return posts.map((post) => ({ slug: post.slug }));
 }
 
 export default async function PostPage({ params }: Props) {

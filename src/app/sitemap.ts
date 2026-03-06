@@ -4,6 +4,8 @@ import { posts } from "@/db/schema";
 import { eq, desc } from "drizzle-orm";
 import { SITE_URL } from "@/lib/utils";
 
+export const dynamic = "force-dynamic";
+
 export default function sitemap(): MetadataRoute.Sitemap {
   const publishedPosts = db
     .select({ slug: posts.slug, updatedAt: posts.updatedAt })

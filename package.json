@@ -5,7 +5,7 @@
   "scripts": {
     "dev": "next dev",
     "build": "next build",
-    "start": "next start",
+    "start": "tsx src/db/seed.ts && next start",
     "lint": "next lint",
     "db:generate": "drizzle-kit generate",
     "db:migrate": "drizzle-kit migrate",
@@ -33,7 +33,9 @@
     "react-dom": "^19.2.4",
     "rss": "^1.2.2",
     "sharp": "^0.34.5",
-    "tailwind-merge": "^3.5.0"
+    "tailwind-merge": "^3.5.0",
+    "tsx": "^4.21.0",
+    "drizzle-kit": "^0.31.9"
   },
   "devDependencies": {
     "@tailwindcss/postcss": "^4.2.1",
@@ -43,12 +45,10 @@
     "@types/react": "^19.2.14",
     "@types/react-dom": "^19.2.3",
     "@types/rss": "^0.0.32",
-    "drizzle-kit": "^0.31.9",
     "eslint": "^9.39.3",
     "eslint-config-next": "^16.1.6",
     "postcss": "^8.5.8",
     "tailwindcss": "^4.2.1",
-    "tsx": "^4.21.0",
     "typescript": "^5.9.3"
   }
 }
