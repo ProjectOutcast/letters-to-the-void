@@ -4,7 +4,7 @@ import type { PostWithAuthor } from "@/types";
 
 export function FeaturedPost({ post }: { post: PostWithAuthor }) {
   return (
-    <Link href={`/posts/${post.slug}`} className="group block">
+    <Link href={`/letters/${post.slug}`} className="group block">
       <article className="relative overflow-hidden rounded-xl border border-void-border transition-all duration-200 hover:border-void-border-hover">
         {post.coverImage ? (
           <div className="relative aspect-[21/9]">

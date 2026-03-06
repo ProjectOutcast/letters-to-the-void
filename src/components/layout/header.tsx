@@ -1,11 +1,24 @@
 "use client";
 
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 import { useState } from "react";
 import { cn } from "@/lib/utils";
 
+const NAV_LINKS = [
+  { href: "/", label: "Vents" },
+  { href: "/letters", label: "Letters" },
+  { href: "/about", label: "About" },
+];
+
 export function Header() {
   const [menuOpen, setMenuOpen] = useState(false);
+  const pathname = usePathname();
+
+  function isActive(href: string) {
+    if (href === "/") return pathname === "/";
+    return pathname.startsWith(href);
+  }
 
   return (
     <header className="fixed top-0 left-0 right-0 z-50 border-b border-void-border bg-void/80 backdrop-blur-md">
@@ -19,18 +32,18 @@ export function Header() {
 
         {/* Desktop nav */}
         <div className="hidden items-center gap-8 md:flex">
-          <Link
-            href="/"
-            className="text-sm text-void-muted transition-colors hover:text-void-text"
-          >
-            Letters
-          </Link>
-          <Link
-            href="/about"
-            className="text-sm text-void-muted transition-colors hover:text-void-text"
-          >
-            About
-          </Link>
+          {NAV_LINKS.map(({ href, label }) => (
+            <Link
+              key={href}
+              href={href}
+              className={cn(
+                "text-sm transition-colors hover:text-void-text",
+                isActive(href) ? "text-void-white" : "text-void-muted"
+              )}
+            >
+              {label}
+            </Link>
+          ))}
           <Link
             href="/feed.xml"
             className="text-sm text-void-muted transition-colors hover:text-void-text"
@@ -75,20 +88,19 @@ export function Header() {
         )}
       >
         <div className="flex flex-col gap-4 px-6 py-4">
-          <Link
-            href="/"
-            onClick={() => setMenuOpen(false)}
-            className="text-sm text-void-muted transition-colors hover:text-void-text"
-          >
-            Letters
-          </Link>
-          <Link
-            href="/about"
-            onClick={() => setMenuOpen(false)}
-            className="text-sm text-void-muted transition-colors hover:text-void-text"
-          >
-            About
-          </Link>
+          {NAV_LINKS.map(({ href, label }) => (
+            <Link
+              key={href}
+              href={href}
+              onClick={() => setMenuOpen(false)}
+              className={cn(
+                "text-sm transition-colors hover:text-void-text",
+                isActive(href) ? "text-void-white" : "text-void-muted"
+              )}
+            >
+              {label}
+            </Link>
+          ))}
           <Link
             href="/feed.xml"
             onClick={() => setMenuOpen(false)}

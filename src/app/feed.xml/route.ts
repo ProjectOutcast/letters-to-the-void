@@ -33,7 +33,7 @@ export async function GET() {
     feed.item({
       title: post.title,
       description: post.excerpt || "",
-      url: `${SITE_URL}/posts/${post.slug}`,
+      url: `${SITE_URL}/letters/${post.slug}`,
       date: post.publishedAt || new Date(),
       author: post.authorName || "Unknown",
     });

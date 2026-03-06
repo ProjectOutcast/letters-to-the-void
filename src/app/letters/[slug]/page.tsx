@@ -106,7 +106,7 @@ export default async function PostPage({ params }: Props) {
         {/* Back link */}
         <div className="mt-16 border-t border-void-border pt-8">
           <Link
-            href="/"
+            href="/letters"
             className="text-sm text-void-muted transition-colors hover:text-void-text"
           >
             &larr; Back to letters

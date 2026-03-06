@@ -21,7 +21,7 @@ export const metadata: Metadata = {
     template: "%s | Letters to The Void",
   },
   description:
-    "Thoughts cast into the darkness. A collection of letters addressed to no one and everyone.",
+    "Send anonymous thoughts into the void. Watch them rise from the globe and dissolve into nothing.",
   alternates: {
     types: {
       "application/rss+xml": "/feed.xml",
@@ -32,7 +32,7 @@ export const metadata: Metadata = {
     siteName: "Letters to The Void",
     title: "Letters to The Void",
     description:
-      "Thoughts cast into the darkness. A collection of letters addressed to no one and everyone.",
+      "Send anonymous thoughts into the void. Watch them rise from the globe and dissolve into nothing.",
   },
   twitter: {
     card: "summary_large_image",

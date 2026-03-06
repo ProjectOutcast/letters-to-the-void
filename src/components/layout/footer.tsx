@@ -9,17 +9,29 @@ export function Footer() {
         </p>
         <div className="flex gap-6">
           <Link
-            href="/feed.xml"
+            href="/"
             className="text-xs text-void-muted transition-colors hover:text-void-text"
-            target="_blank"
           >
-            RSS
+            Vents
+          </Link>
+          <Link
+            href="/letters"
+            className="text-xs text-void-muted transition-colors hover:text-void-text"
+          >
+            Letters
           </Link>
           <Link
             href="/about"
             className="text-xs text-void-muted transition-colors hover:text-void-text"
           >
             About
+          </Link>
+          <Link
+            href="/feed.xml"
+            className="text-xs text-void-muted transition-colors hover:text-void-text"
+            target="_blank"
+          >
+            RSS
           </Link>
         </div>
       </div>

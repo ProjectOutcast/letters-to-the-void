@@ -4,7 +4,7 @@ import type { PostWithAuthor } from "@/types";
 
 export function PostCard({ post }: { post: PostWithAuthor }) {
   return (
-    <Link href={`/posts/${post.slug}`} className="group block">
+    <Link href={`/letters/${post.slug}`} className="group block">
       <article className="overflow-hidden rounded-lg border border-void-border bg-void-surface transition-all duration-200 hover:border-void-border-hover hover:shadow-[0_0_30px_rgba(255,255,255,0.02)]">
         {post.coverImage && (
           <div className="relative aspect-[16/9] overflow-hidden">

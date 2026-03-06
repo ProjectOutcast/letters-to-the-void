@@ -1,4 +1,4 @@
-import type { users, posts, media } from "@/db/schema";
+import type { users, posts, media, vents } from "@/db/schema";
 
 export type User = typeof users.$inferSelect;
 export type NewUser = typeof users.$inferInsert;
@@ -8,6 +8,9 @@ export type NewPost = typeof posts.$inferInsert;
 
 export type Media = typeof media.$inferSelect;
 export type NewMedia = typeof media.$inferInsert;
+
+export type Vent = typeof vents.$inferSelect;
+export type NewVent = typeof vents.$inferInsert;
 
 export type PostWithAuthor = Post & {
   author: Pick<User, "id" | "name" | "image">;

@@ -15,7 +15,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
     .all();
 
   const postEntries = publishedPosts.map((post) => ({
-    url: `${SITE_URL}/posts/${post.slug}`,
+    url: `${SITE_URL}/letters/${post.slug}`,
     lastModified: post.updatedAt,
   }));
 

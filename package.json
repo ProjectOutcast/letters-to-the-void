@@ -15,6 +15,8 @@
   },
   "dependencies": {
     "@auth/drizzle-adapter": "^1.11.1",
+    "@react-three/drei": "^10.7.7",
+    "@react-three/fiber": "^9.5.0",
     "@tiptap/extension-code-block-lowlight": "^3.20.0",
     "@tiptap/extension-image": "^3.20.0",
     "@tiptap/extension-link": "^3.20.0",
@@ -25,6 +27,7 @@
     "bcryptjs": "^3.0.3",
     "better-sqlite3": "^12.6.2",
     "clsx": "^2.1.1",
+    "drizzle-kit": "^0.31.9",
     "drizzle-orm": "^0.45.1",
     "lowlight": "^3.3.0",
     "next": "^16.1.6",
@@ -34,8 +37,8 @@
     "rss": "^1.2.2",
     "sharp": "^0.34.5",
     "tailwind-merge": "^3.5.0",
-    "tsx": "^4.21.0",
-    "drizzle-kit": "^0.31.9"
+    "three": "^0.183.2",
+    "tsx": "^4.21.0"
   },
   "devDependencies": {
     "@tailwindcss/postcss": "^4.2.1",
@@ -45,6 +48,7 @@
     "@types/react": "^19.2.14",
     "@types/react-dom": "^19.2.3",
     "@types/rss": "^0.0.32",
+    "@types/three": "^0.183.1",
     "eslint": "^9.39.3",
     "eslint-config-next": "^16.1.6",
     "postcss": "^8.5.8",
